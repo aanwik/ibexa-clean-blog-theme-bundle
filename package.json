@@ -1,0 +1,29 @@
+{
+  "name": "ibexa-clean-blog-theme-bundle",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "release": "release-it"
+  },
+  "devDependencies": {
+    "@release-it/bumper": "^6.0.0",
+    "release-it": "^17.0.0"
+  },
+  "release-it": {
+    "git": {
+      "commitMessage": "chore: release v${version}",
+      "tagName": "v${version}"
+    },
+    "npm": {
+      "publish": false
+    },
+    "github": {
+      "release": true
+    },
+    "plugins": {
+      "@release-it/bumper": {
+        "out": "composer.json"
+      }
+    }
+  }
+}

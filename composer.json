@@ -1,8 +1,9 @@
 {
     "name": "aanwik/ibexa-clean-blog-theme-bundle",
     "description": "Ibexa Clean Blog Theme Bundle - StartBootstrap Clean Blog template with custom Content Types",
+    "version": "1.0.0",
     "type": "symfony-bundle",
-    "license": "MIT",
+    "license": "CC-BY-4.0",
     "authors": [
         {
             "name": "Aanwik",
