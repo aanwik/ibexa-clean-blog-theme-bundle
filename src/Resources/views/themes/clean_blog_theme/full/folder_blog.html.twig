@@ -1,0 +1,40 @@
+{% extends '@ibexadesign/pagelayout.html.twig' %}
+
+{% block title %}{{ ibexa_content_name(content) }} - Clean Blog{% endblock %}
+
+{% block masthead %}
+    <!-- Page Header-->
+    {% set has_hero = not ibexa_field_is_empty(content, 'hero_image') %}
+    <header class="masthead" style="background-image: url('{% if has_hero %}{{ asset(ibexa_image_alias(ibexa_field(content, 'hero_image'), content.versionInfo, 'original').uri) }}{% else %}{{ asset('bundles/aanwikibexacleanblogtheme/images/home-bg.jpg') }}{% endif %}')">
+        <div class="container position-relative px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="site-heading">
+                        <h1>{{ ibexa_field_value(content, 'name') }}</h1>
+                        {% if not ibexa_field_is_empty(content, 'short_name') %}
+                            <span class="subheading">{{ ibexa_field_value(content, 'short_name') }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+{% block content %}
+    <!-- Main Content-->
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                {% for hit in blog_posts %}
+                    {% set post = hit.valueObject %}
+                    {% include '@clean_blog_theme/listing/_listing_posts.html.twig' with {'post': post} %}
+                    <!-- Divider-->
+                    <hr class="my-4"/>
+                {% else %}
+                    <p>No blog posts yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

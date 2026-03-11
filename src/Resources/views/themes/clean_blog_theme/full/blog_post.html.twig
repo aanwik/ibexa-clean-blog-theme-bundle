@@ -1,0 +1,96 @@
+{% extends '@ibexadesign/pagelayout.html.twig' %}
+
+{% block title %}{{ ibexa_content_name(content) }} - Clean Blog{% endblock %}
+
+{% block masthead %}
+<!-- Page Header-->
+<header class="masthead" style="background-image: url('{% if not ibexa_field_is_empty(content, 'image') %}{{ asset(ibexa_image_alias(ibexa_field(content, 'image'), content.versionInfo, 'original').uri) }}{% else %}{{ asset('bundles/aanwikibexacleanblogtheme/images/post-bg.jpg') }}{% endif %}')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="post-heading">
+                    <h1>{{ ibexa_content_name(content) }}</h1>
+                    {% if not ibexa_field_is_empty(content, 'subtitle') %}
+                        <h2 class="subheading">{{ ibexa_field_value(content, 'subtitle') }}</h2>
+                    {% endif %}
+                        {% if not ibexa_field_is_empty(content, 'post_author') %}
+                            {% set author_content = cb_load_user(ibexa_field_value(content, 'post_author').destinationContentId) %}
+                        {% else %}
+                            {% set author_content = cb_load_user(content.contentInfo.ownerId) %}
+                        {% endif %}
+                        {% if author_content %}
+                            <a href="{{ cb_author_url(author_content.id) }}">{{ ibexa_content_name(author_content) }}</a>
+                        {% else %}
+                            <a href="#!">Admin</a>
+                        {% endif %}
+                        on {{ ibexa_field_value(content, 'date')|default(content.contentInfo.publishedDate|date('F j, Y')) }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<!-- Post Content-->
+<article class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                {% if not ibexa_field_is_empty(content, 'content') %}
+                    {{ ibexa_field_value(content, 'content').xml|ibexa_richtext_to_html5|raw }}
+                {% elseif not ibexa_field_is_empty(content, 'excerpt') %}
+                    <p>{{ ibexa_field_value(content, 'excerpt') }}</p>
+                {% endif %}
+
+                {% if not ibexa_field_is_empty(content, 'tags') or not ibexa_field_is_empty(content, 'categories') %}
+                <div class="post-taxonomy mt-5 pt-3 border-top">
+                    {% if not ibexa_field_is_empty(content, 'tags') %}
+                    <div class="mb-2">
+                        <strong>Tags:</strong>
+                        {% for tag in ibexa_field_value(content, 'tags').tags %}
+                            <a href="{{ path('clean_blog_tag', {slug: tag.keyword}) }}" class="badge bg-secondary text-decoration-none link-light">{{ tag.keyword }}</a>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    
+                    {% if not ibexa_field_is_empty(content, 'categories') %}
+                    <div>
+                        <strong>Categories:</strong>
+                        {% for category_rel in ibexa_field_value(content, 'categories').destinationContentIds %}
+                            {% set category = ibexa_load_content(category_rel) %}
+                            <a href="{{ ibexa_path(category) }}" class="text-decoration-none">{{ ibexa_content_name(category) }}</a>{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                {% if not ibexa_field_is_empty(content, 'post_author') %}
+                    {% set author_content = cb_load_user(ibexa_field_value(content, 'post_author').destinationContentId) %}
+                {% else %}
+                    {% set author_content = cb_load_user(content.contentInfo.ownerId) %}
+                {% endif %}
+                {% if author_content %}
+                    <div class="author-section mt-5 p-4 bg-light rounded d-flex align-items-center">
+                        {% if not ibexa_field_is_empty(author_content, 'image') %}
+                            <img src="{{ ibexa_image_alias(ibexa_field(author_content, 'image'), author_content.versionInfo, 'small').uri }}" alt="{{ ibexa_content_name(author_content) }}" class="rounded-circle me-4" style="width: 80px; height: 80px; object-fit: cover;">
+                        {% endif %}
+                        <div>
+                            <h4 class="mb-1"><a href="{{ cb_author_url(author_content.id) }}" class="text-decoration-none text-dark">{{ ibexa_content_name(author_content) }}</a></h4>
+                            <p class="mb-0 text-muted small">{{ ibexa_field_value(author_content, 'bio')|striptags|truncate(150) }}</p>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {# Comments Section #}
+                <div class="comments-section mt-5 pt-5 border-top">
+                    <h3 class="mb-4">Comments</h3>
+                    {{ ibexa_comments_render_content(content.contentInfo) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+{% endblock %}

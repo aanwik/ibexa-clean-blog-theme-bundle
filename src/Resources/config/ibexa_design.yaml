@@ -1,0 +1,67 @@
+ibexa_design_engine:
+    design_list:
+        clean_blog_theme:
+            - clean_blog_theme
+            - standard
+
+# Content views and design configuration
+ibexa:
+    system:
+        site:
+            design: clean_blog_theme
+            content_view:
+                full:
+                    # Homepage
+                    clean_blog_homepage:
+                        controller: Aanwik\IbexaCleanBlogThemeBundle\Controller\CleanBlogHomepageController::showHomepageAction
+                        template: '@clean_blog_theme/full/homepage.html.twig'
+                        match:
+                            Identifier\ContentType: 'folder'
+                            Id\Location: 2
+
+                    # Listing Folders (Categories, Tags, Authors, Archives)
+                    clean_blog_folder_lists:
+                        controller: Aanwik\IbexaCleanBlogThemeBundle\Controller\CleanBlogFolderController::viewLocationAction
+                        match:
+                            Identifier\ContentType: 'folder'
+
+                    # Blog Post
+                    clean_blog_post:
+                        controller: Aanwik\IbexaCleanBlogThemeBundle\Controller\CleanBlogPostController::showPostAction
+                        template: '@clean_blog_theme/full/blog_post.html.twig'
+                        match:
+                            Identifier\ContentType: 'aanwik_clean_blog_post'
+
+                    # Contact Page (must be before generic page)
+                    clean_blog_contact:
+                        controller: Aanwik\IbexaCleanBlogThemeBundle\Controller\CleanBlogContactController::showContactAction
+                        template: '@clean_blog_theme/full/contact.html.twig'
+                        match:
+                            Id\Remote: 'clean_blog_page_contact'
+
+                    # Standalone Page
+                    clean_blog_page:
+                        template: '@clean_blog_theme/full/page.html.twig'
+                        match:
+                            Identifier\ContentType: 'aanwik_clean_blog_page'
+
+                    # Author Profile
+                    clean_blog_author:
+                        controller: Aanwik\IbexaCleanBlogThemeBundle\Controller\CleanBlogAuthorController::showAuthorAction
+                        template: '@clean_blog_theme/full/author.html.twig'
+                        match:
+                            Identifier\ContentType: 'user'
+
+                    # Category Page
+                    clean_blog_category:
+                        controller: Aanwik\IbexaCleanBlogThemeBundle\Controller\CleanBlogListingController::categoryAction
+                        template: '@clean_blog_theme/full/category.html.twig'
+                        match:
+                            Identifier\ContentType: 'aanwik_clean_blog_category'
+
+                line:
+                    # Blog Post Line view
+                    clean_blog_post:
+                        template: '@clean_blog_theme/line/blog_post.html.twig'
+                        match:
+                            Identifier\ContentType: 'aanwik_clean_blog_post'

@@ -1,0 +1,33 @@
+{% extends '@clean_blog_theme/layout/pagelayout.html.twig' %}
+
+{% block title %}404 - Page Not Found | {{ parent() }}{% endblock %}
+
+{% block content %}
+<!-- Page Header-->
+<header class="masthead" style="background-image: url('{{ asset('bundles/aanwikibexacleanblogtheme/images/post-bg.jpg') }}')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>404</h1>
+                    <span class="subheading">Page Not Found</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content-->
+<main class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7 text-center">
+                <p>Sorry, the page you are looking for does not exist or has been moved.</p>
+                <div class="mt-5">
+                    <a class="btn btn-primary text-uppercase" href="{{ path('ibexa.url_alias', {'locationId': 2}) }}">Return Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

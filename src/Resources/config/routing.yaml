@@ -1,0 +1,43 @@
+# Frontend routes
+clean_blog_listing:
+    path: /blog/{page}
+    controller: Aanwik\IbexaCleanBlogThemeBundle\Controller\CleanBlogListingController::listAction
+    defaults:
+        page: 1
+    requirements:
+        page: '\d+'
+
+clean_blog_search:
+    path: /search
+    controller: Aanwik\IbexaCleanBlogThemeBundle\Controller\CleanBlogListingController::searchAction
+    methods: [GET]
+
+clean_blog_archive:
+    path: /archive/{year}/{month}/{page}
+    controller: Aanwik\IbexaCleanBlogThemeBundle\Controller\CleanBlogListingController::archiveAction
+    defaults:
+        page: 1
+    requirements:
+        year: '\d{4}'
+        month: '\d{1,2}'
+        page: '\d+'
+
+
+
+clean_blog_tag:
+    path: /tag/{slug}/{page}
+    controller: Aanwik\IbexaCleanBlogThemeBundle\Controller\CleanBlogListingController::tagAction
+    defaults:
+        page: 1
+    requirements:
+        slug: '.+'
+        page: '\d+'
+
+clean_blog_author:
+    path: /author/{slug}/{page}
+    controller: Aanwik\IbexaCleanBlogThemeBundle\Controller\CleanBlogAuthorController::showAuthorAction
+    defaults:
+        page: 1
+    requirements:
+        slug: '.+'
+        page: '\d+'

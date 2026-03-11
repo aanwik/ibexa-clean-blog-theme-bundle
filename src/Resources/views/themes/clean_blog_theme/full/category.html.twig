@@ -1,0 +1,33 @@
+{% extends '@ibexadesign/pagelayout.html.twig' %}
+
+{% set image_value = ibexa_field_value(category, 'hero_image') %}
+{% set image_url = not ibexa_field_is_empty(category, 'hero_image') ? ibexa_image_alias(ibexa_field(category, 'hero_image'), category.versionInfo, 'origin').uri : asset('bundles/aanwikibexacleanblogtheme/images/home-bg.jpg') %}
+
+{% block title %}Category: {{ ibexa_content_name(category) }} - Clean Blog{% endblock %}
+
+{% block masthead %}
+<header class="masthead" style="background-image: url('{{ image_url }}')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>{{ ibexa_content_name(category) }}</h1>
+                    {% if not ibexa_field_is_empty(category, 'description') %}
+                        <span class="subheading">{{ ibexa_field_value(category, 'description') }}</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            {% include '@clean_blog_theme/listing/_listing_posts.html.twig' %}
+        </div>
+    </div>
+</div>
+{% endblock %}

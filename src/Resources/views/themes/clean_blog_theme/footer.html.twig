@@ -1,0 +1,86 @@
+{% set settings = clean_blog_settings() %}
+<!-- Footer-->
+<footer class="border-top">
+	<div class="container px-4 px-lg-5">
+		<div class="row gx-4 gx-lg-5 justify-content-center">
+			<div class="col-md-10 col-lg-8 col-xl-7">
+				<ul class="list-inline text-center">
+					{% if settings and not ibexa_field_is_empty(settings, 'tw_link') %}
+						<li class="list-inline-item">
+							<a href="{{ ibexa_field_value(settings, 'tw_link') }}">
+								<span class="fa-stack fa-lg">
+									<i class="fas fa-circle fa-stack-2x"></i>
+									<i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+								</span>
+							</a>
+						</li>
+					{% endif %}
+					{% if settings and not ibexa_field_is_empty(settings, 'fb_link') %}
+						<li class="list-inline-item">
+							<a href="{{ ibexa_field_value(settings, 'fb_link') }}">
+								<span class="fa-stack fa-lg">
+									<i class="fas fa-circle fa-stack-2x"></i>
+									<i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+								</span>
+							</a>
+						</li>
+					{% endif %}
+					{% if settings and not ibexa_field_is_empty(settings, 'ig_link') %}
+						<li class="list-inline-item">
+							<a href="{{ ibexa_field_value(settings, 'ig_link') }}">
+								<span class="fa-stack fa-lg">
+									<i class="fas fa-circle fa-stack-2x"></i>
+									<i class="fab fa-instagram fa-stack-1x fa-inverse"></i>
+								</span>
+							</a>
+						</li>
+					{% endif %}
+					{% if settings and not ibexa_field_is_empty(settings, 'gh_link') %}
+						<li class="list-inline-item">
+							<a href="{{ ibexa_field_value(settings, 'gh_link') }}">
+								<span class="fa-stack fa-lg">
+									<i class="fas fa-circle fa-stack-2x"></i>
+									<i class="fab fa-github fa-stack-1x fa-inverse"></i>
+								</span>
+							</a>
+						</li>
+					{% endif %}
+					{% if settings and not ibexa_field_is_empty(settings, 'li_link') %}
+						<li class="list-inline-item">
+							<a href="{{ ibexa_field_value(settings, 'li_link') }}">
+								<span class="fa-stack fa-lg">
+									<i class="fas fa-circle fa-stack-2x"></i>
+									<i class="fab fa-linkedin-in fa-stack-1x fa-inverse"></i>
+								</span>
+							</a>
+						</li>
+					{% endif %}
+				</ul>
+				<div class="small text-center text-muted fst-italic">
+					{% if settings and not ibexa_field_is_empty(settings, 'copyright') %}
+						{{ ibexa_field_value(settings, 'copyright') }}
+					{% else %}
+						Copyright &copy; Clean Blog
+						{{ "now"|date("Y") }}
+					{% endif %}
+				</div>
+				<div class="small text-center text-muted mt-2 mb-2">
+					{% for item in clean_blog_menu('footer') %}
+						<a href="{{ path('ibexa.url.alias', {'locationId': item.locationId}) }}" class="text-secondary text-decoration-none">{{ item.name }}</a>
+						{% if not loop.last %}
+							&middot;
+						{% endif %}
+					{% endfor %}
+				</div>
+				<div class="small text-center text-muted fst-italic">
+					Powered By
+					<a href="https://www.ibexa.co/">Ibexa</a>
+					&amp; Developed By
+					<a href="https://www.aanwik.com/">Aanwik</a>
+					&amp; Theme by
+					<a href="https://startbootstrap.com/">StartBootstrap</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>

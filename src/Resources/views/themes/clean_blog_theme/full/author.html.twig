@@ -1,0 +1,60 @@
+{% extends '@ibexadesign/pagelayout.html.twig' %}
+
+{% set image_value = ibexa_field_value(author, 'image') %}
+{% set image_url = not ibexa_field_is_empty(author, 'image') ? ibexa_image_alias(ibexa_field(author, 'image'), author.versionInfo, 'original').uri : asset('bundles/aanwikibexacleanblogtheme/images/about-bg.jpg') %}
+
+{% block title %}{{ ibexa_content_name(author) }} - Author Profile - Clean Blog{% endblock %}
+
+{% block masthead %}
+<header class="masthead" style="background-image: url('{{ image_url }}')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>{{ ibexa_content_name(author) }}</h1>
+                    <span class="subheading">Author Profile</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            <div class="author-bio mb-5 text-center">
+                {% if not ibexa_field_is_empty(author, 'image') %}
+                    <img src="{{ ibexa_image_alias(ibexa_field(author, 'image'), author.versionInfo, 'small').uri }}" alt="{{ ibexa_content_name(author) }}" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                {% endif %}
+                
+                <p class="lead">{{ ibexa_field_value(author, 'bio')|striptags }}</p>
+                
+                <div class="social-links mt-3">
+                    {% if not ibexa_field_is_empty(author, 'twitter') %}
+                        <a href="{{ ibexa_field_value(author, 'twitter') }}" class="btn btn-outline-dark btn-sm me-2" target="_blank"><i class="fab fa-twitter"></i></a>
+                    {% endif %}
+                    {% if not ibexa_field_is_empty(author, 'facebook') %}
+                        <a href="{{ ibexa_field_value(author, 'facebook') }}" class="btn btn-outline-dark btn-sm me-2" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    {% endif %}
+                    {% if not ibexa_field_is_empty(author, 'github') %}
+                        <a href="{{ ibexa_field_value(author, 'github') }}" class="btn btn-outline-dark btn-sm me-2" target="_blank"><i class="fab fa-github"></i></a>
+                    {% endif %}
+                    {% if not ibexa_field_is_empty(author, 'linkedin') %}
+                        <a href="{{ ibexa_field_value(author, 'linkedin') }}" class="btn btn-outline-dark btn-sm me-2" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                    {% endif %}
+                    {% if not ibexa_field_is_empty(author, 'instagram') %}
+                        <a href="{{ ibexa_field_value(author, 'instagram') }}" class="btn btn-outline-dark btn-sm" target="_blank"><i class="fab fa-instagram"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <hr class="my-5">
+            
+            <h3 class="mb-4 text-center">Posts by {{ ibexa_content_name(author) }}</h3>
+            {% include '@clean_blog_theme/listing/_listing_posts.html.twig' %}
+        </div>
+    </div>
+</div>
+{% endblock %}

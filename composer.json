@@ -1,0 +1,32 @@
+{
+    "name": "aanwik/ibexa-clean-blog-theme-bundle",
+    "description": "Ibexa Clean Blog Theme Bundle - StartBootstrap Clean Blog template with custom Content Types",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Aanwik",
+            "email": "aanwiksolutions@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.3",
+        "ibexa/oss": "^5.0.0",
+        "netgen/tagsbundle": "^6.0",
+        "aanwik/ibexa-comments-bundle": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Aanwik\\IbexaCleanBlogThemeBundle\\": "src/"
+        }
+    },
+    "extra": {
+        "symfony": {
+            "bundles": {
+                "Aanwik\\IbexaCleanBlogThemeBundle\\AanwikIbexaCleanBlogThemeBundle": [
+                    "all"
+                ]
+            }
+        }
+    }
+}

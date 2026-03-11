@@ -1,0 +1,35 @@
+<div class="ibexa-dashboard-block ibexa-dashboard-block--contact-submissions">
+    <div class="ibexa-dashboard-block__header">
+        <h3 class="ibexa-dashboard-block__title">Latest Contact Submissions</h3>
+        {% if unread_count > 0 %}
+            <span class="badge bg-danger ms-2">{{ unread_count }} unread</span>
+        {% endif %}
+    </div>
+    <div class="ibexa-dashboard-block__content p-0">
+        {% if submissions|length > 0 %}
+            <ul class="list-group list-group-flush">
+                {% for submission in submissions %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center py-3">
+                        <div class="min-width-0">
+                            <div class="d-flex align-items-center mb-1">
+                                <h6 class="mb-0 text-truncate me-2 {{ not submission.isRead ? 'fw-bold' : 'text-muted' }}">
+                                    {{ submission.name }}
+                                </h6>
+                                <small class="text-muted">{{ submission.createdAt|date('M j') }}</small>
+                            </div>
+                            <div class="small text-muted text-truncate">{{ submission.subject }}</div>
+                        </div>
+                        <a href="{{ path('clean_blog.admin.contact_submission_view', {id: submission.id}) }}" class="btn btn-sm btn-outline-primary ms-3">View</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <div class="p-3 border-top text-center">
+                <a href="{{ path('clean_blog.admin.contact_submissions') }}" class="btn btn-sm btn-link text-decoration-none p-0">View all submissions</a>
+            </div>
+        {% else %}
+            <div class="p-5 text-center text-muted">
+                <p class="mb-0">No submissions yet.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,40 @@
+<!-- Blog Post Line View -->
+<div class="post-preview">
+    <a href="{{ ibexa_path(content) }}">
+        <h2 class="post-title">{{ ibexa_content_name(content) }}</h2>
+        {% if not ibexa_field_is_empty(content, 'subtitle') %}
+            <h3 class="post-subtitle">{{ ibexa_field_value(content, 'subtitle') }}</h3>
+        {% endif %}
+    </a>
+    <p class="post-meta">
+        Posted by
+        {% if not ibexa_field_is_empty(content, 'post_author') %}
+            {% set author_content = cb_load_user(ibexa_field_value(content, 'post_author').destinationContentId) %}
+        {% else %}
+            {% set author_content = cb_load_user(content.contentInfo.ownerId) %}
+        {% endif %}
+        <a href="{{ author_content ? cb_author_url(author_content.id) : '#!' }}">{% if author_content %}{{ ibexa_content_name(author_content) }}{% else %}Admin{% endif %}</a>
+        on {{ ibexa_field_value(content, 'date')|default(content.contentInfo.publishedDate|date('F j, Y')) }}
+    </p>
+
+    {% if not ibexa_field_is_empty(content, 'tags') %}
+    <div class="post-tags mb-2">
+        <i class="fas fa-tags small"></i>
+        {% for tag in ibexa_field_value(content, 'tags').tags %}
+            <a href="{{ path('clean_blog_tag', {slug: tag.keyword}) }}" class="badge bg-secondary text-decoration-none link-light">{{ tag.keyword }}</a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if not ibexa_field_is_empty(content, 'categories') %}
+    <div class="post-categories mb-3">
+        <i class="fas fa-folder small"></i>
+        {% for category_rel in ibexa_field_value(content, 'categories').destinationContentIds %}
+            {% set category = ibexa_load_content(category_rel) %}
+            {% set cat_slug = clean_blog_slug(category.contentInfo.mainLocationId) %}
+            <a href="{{ ibexa_path(category) }}" class="text-decoration-none small">{{ ibexa_content_name(category) }}</a>{% if not loop.last %}, {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+<hr class="my-4" />

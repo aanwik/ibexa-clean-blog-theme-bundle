@@ -1,0 +1,99 @@
+{% extends '@ibexadesign/pagelayout.html.twig' %}
+
+{% block title %}
+	{{ ibexa_content_name(ibexa_content) }}
+	- Clean Blog
+{% endblock %}
+
+{% block masthead %}
+	<!-- Page Header-->
+	{% set has_hero = ibexa_content.contentType.identifier == 'folder' and not ibexa_field_is_empty(ibexa_content, 'hero_image') %}
+	<header class="masthead" style="background-image: url('{% if has_hero %}{{ asset(ibexa_image_alias(ibexa_field(ibexa_content, 'hero_image'), ibexa_content.versionInfo, 'original').uri) }}{% else %}{{ asset('bundles/aanwikibexacleanblogtheme/images/home-bg.jpg') }}{% endif %}')">
+		<div class="container position-relative px-4 px-lg-5">
+			<div class="row gx-4 gx-lg-5 justify-content-center">
+				<div class="col-md-10 col-lg-8 col-xl-7">
+					<div class="site-heading">
+						{% if ibexa_content.contentType.identifier == 'folder' %}
+							<h1>{{ ibexa_field_value(ibexa_content, 'name') }}</h1>
+							{% if not ibexa_field_is_empty(ibexa_content, 'short_name') %}
+								<span class="subheading">{{ ibexa_field_value(ibexa_content, 'short_name') }}</span>
+							{% endif %}
+						{% else %}
+							<h1>Clean Blog</h1>
+							<span class="subheading">A Blog Theme by Start Bootstrap</span>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+{% endblock %}
+
+{% block content %}
+	<!-- Main Content-->
+	<div class="container px-4 px-lg-5">
+		<div class="row gx-4 gx-lg-5 justify-content-center">
+			<div class="col-md-10 col-lg-8 col-xl-7">
+				{% for post in blog_posts %}
+					<!-- Post preview-->
+					<div class="post-preview">
+						<a href="{{ ibexa_path(post) }}">
+							<h2 class="post-title">{{ ibexa_content_name(post) }}</h2>
+							{% if not ibexa_field_is_empty(post, 'subtitle') %}
+								<h3 class="post-subtitle">{{ ibexa_field_value(post, 'subtitle') }}</h3>
+							{% endif %}
+						</a>
+						<p class="post-meta">
+							Posted by
+							{% if not ibexa_field_is_empty(post, 'post_author') %}
+								{% set author_content = cb_load_user(ibexa_field_value(post, 'post_author').destinationContentId) %}
+							{% else %}
+								{% set author_content = cb_load_user(post.contentInfo.ownerId) %}
+							{% endif %}
+							<a href="{{ author_content ? cb_author_url(author_content.id) : '#!' }}">
+								{% if author_content %}
+									{{ ibexa_content_name(author_content) }}{% else %}Admin
+								{% endif %}
+							</a>
+							on
+							{{ ibexa_field_value(post, 'date')|default(post.contentInfo.publishedDate|date('F j, Y')) }}
+						</p>
+
+						{% if not ibexa_field_is_empty(post, 'tags') %}
+							<div class="post-tags mb-2">
+								<i class="fas fa-tags small"></i>
+								{% for tag in ibexa_field_value(post, 'tags').tags %}
+									<a href="{{ path('clean_blog_tag', {slug: tag.keyword}) }}" class="badge bg-secondary text-decoration-none link-light">{{ tag.keyword }}</a>
+								{% endfor %}
+							</div>
+						{% endif %}
+
+						{% if not ibexa_field_is_empty(post, 'categories') %}
+							<div class="post-categories mb-3">
+								<i class="fas fa-folder small"></i>
+								{% for category_rel in ibexa_field_value(post, 'categories').destinationContentIds %}
+									{% set category = ibexa_load_content(category_rel) %}
+									<a href="{{ ibexa_path(category) }}" class="text-decoration-none small">{{ ibexa_content_name(category) }}</a>
+									{% if not loop.last %},
+									{% endif %}
+								{% endfor %}
+							</div>
+						{% endif %}
+					</div>
+					<!-- Divider-->
+					<hr class="my-4"/>
+				{% else %}
+					<p>No blog posts yet. Run
+						<code>php bin/console aanwik:clean-blog:import-demo</code>
+						to create demo content.</p>
+				{% endfor %}
+				<!-- Pager-->
+				{% if blog_posts|length > 0 %}
+					<div class="d-flex justify-content-end mb-4">
+						<a class="btn btn-primary text-uppercase" href="{{ path('clean_blog_listing') }}">Older Posts &rarr;</a>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+{% endblock %}

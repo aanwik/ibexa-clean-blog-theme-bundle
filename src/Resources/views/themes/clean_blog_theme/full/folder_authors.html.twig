@@ -1,0 +1,50 @@
+{% extends '@ibexadesign/pagelayout.html.twig' %}
+
+{% block title %}Authors - {{ ibexa_content_name(content) }}{% endblock %}
+
+{% block masthead %}
+    <header class="masthead" style="background-image: url('{{ asset('bundles/aanwikibexacleanblogtheme/images/about-bg.jpg') }}')">
+        <div class="container position-relative px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="page-heading">
+                        <h1>Authors</h1>
+                        <span class="subheading">Meet the team</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+{% block content %}
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="list-group list-group-flush mb-5">
+                    {% for hit in authors %}
+                        {% set author = hit.valueObject %}
+                        <a href="{{ cb_author_url(author) }}" class="list-group-item list-group-item-action d-flex align-items-center py-3">
+                            {% if not ibexa_field_is_empty(author, 'image') %}
+                                <img src="{{ ibexa_image_alias(ibexa_field(author, 'image'), author.versionInfo, 'original').uri }}" class="rounded-circle me-3" style="width: 50px; height: 50px; object-fit: cover;" alt="{{ ibexa_content_name(author) }}">
+                            {% else %}
+                                <div class="rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center me-3" style="width: 50px; height: 50px;">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                            {% endif %}
+                            
+                            <div>
+                                <h5 class="mb-1">{{ ibexa_content_name(author) }}</h5>
+                                {% if not ibexa_field_is_empty(author, 'bio') %}
+                                    <p class="mb-0 text-muted small">{{ ibexa_field_value(author, 'bio')|striptags|slice(0, 100) ~ '...' }}</p>
+                                {% endif %}
+                            </div>
+                        </a>
+                    {% else %}
+                        <p class="text-center">No authors found.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

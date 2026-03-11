@@ -1,0 +1,25 @@
+# Admin routes
+clean_blog.admin.contact_submissions:
+    path: /clean-blog/contact-submissions
+    controller: Aanwik\IbexaCleanBlogThemeBundle\Controller\Admin\ContactSubmissionController::listAction
+    methods: [GET]
+    defaults:
+        siteaccess_group_whitelist: [admin_group]
+
+clean_blog.admin.contact_submission_view:
+    path: /clean-blog/contact-submissions/{id}
+    controller: Aanwik\IbexaCleanBlogThemeBundle\Controller\Admin\ContactSubmissionController::viewAction
+    methods: [GET]
+    requirements:
+        id: '\d+'
+    defaults:
+        siteaccess_group_whitelist: [admin_group]
+
+clean_blog.admin.contact_submission_delete:
+    path: /clean-blog/contact-submissions/{id}/delete
+    controller: Aanwik\IbexaCleanBlogThemeBundle\Controller\Admin\ContactSubmissionController::deleteAction
+    methods: [GET]
+    requirements:
+        id: '\d+'
+    defaults:
+        siteaccess_group_whitelist: [admin_group]

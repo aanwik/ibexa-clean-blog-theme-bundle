@@ -1,0 +1,46 @@
+{% extends '@ibexadesign/pagelayout.html.twig' %}
+
+{% block title %}Archives - {{ ibexa_content_name(content) }}{% endblock %}
+
+{% block masthead %}
+    <header class="masthead" style="background-image: url('{{ asset('bundles/aanwikibexacleanblogtheme/images/about-bg.jpg') }}')">
+        <div class="container position-relative px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="page-heading">
+                        <h1>Archives</h1>
+                        <span class="subheading">Recent publications</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+{% block content %}
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                {% for hit in archives %}
+                    {% set post = hit.valueObject %}
+                    <div class="post-preview">
+                        <a href="{{ ibexa_path(post) }}">
+                            <h2 class="post-title">{{ ibexa_content_name(post) }}</h2>
+                            {% if not ibexa_field_is_empty(post, 'subtitle') %}
+                                <h3 class="post-subtitle">{{ ibexa_field_value(post, 'subtitle') }}</h3>
+                            {% endif %}
+                        </a>
+                        <p class="post-meta">
+                            Posted on {{ ibexa_field_value(post, 'date')|default(post.contentInfo.publishedDate|date('F j, Y')) }}
+                        </p>
+                    </div>
+                    {% if not loop.last %}
+                        <hr class="my-4" />
+                    {% endif %}
+                {% else %}
+                    <p class="text-center">No posts found.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

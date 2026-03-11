@@ -1,0 +1,273 @@
+{% extends '@ibexadesign/pagelayout.html.twig' %}
+
+{% block title %}{{ ibexa_content_name(content) }} - Clean Blog{% endblock %}
+
+{% block extra_css %}
+<style>
+    .contact-info-card {
+        background: linear-gradient(135deg, #0085A1 0%, #006b82 100%);
+        border-radius: 12px;
+        padding: 2rem;
+        color: #ffffff;
+        margin-bottom: 2.5rem;
+        box-shadow: 0 4px 15px rgba(0, 133, 161, 0.3);
+    }
+    .contact-info-card h4 {
+        font-family: 'Lora', serif;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        font-size: 1.4rem;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+        padding-bottom: 0.75rem;
+    }
+    .contact-info-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+        gap: 0.75rem;
+    }
+    .contact-info-item:last-child {
+        margin-bottom: 0;
+    }
+    .contact-info-item i {
+        font-size: 1.1rem;
+        margin-top: 3px;
+        opacity: 0.85;
+        width: 20px;
+        text-align: center;
+        flex-shrink: 0;
+    }
+    .contact-info-item span,
+    .contact-info-item a {
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+    .contact-info-item a:hover {
+        text-decoration: underline;
+        opacity: 0.9;
+    }
+    .contact-social-links {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 1.25rem;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .contact-social-links a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.15);
+        color: #ffffff;
+        text-decoration: none;
+        transition: all 0.25s ease;
+        font-size: 0.95rem;
+    }
+    .contact-social-links a:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+    }
+
+    .contact-form-section h4 {
+        font-family: 'Lora', serif;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: #212529;
+    }
+    .contact-form .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .contact-form .form-control:focus {
+        border-color: #0085A1;
+        box-shadow: 0 0 0 3px rgba(0, 133, 161, 0.15);
+    }
+    .contact-form label {
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 0.4rem;
+        color: #495057;
+    }
+    .contact-form .mb-3 {
+        margin-bottom: 1.25rem !important;
+    }
+    .contact-form .btn-submit {
+        background: #0085A1;
+        border: none;
+        color: #ffffff;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 0.8rem 2.5rem;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        transition: all 0.25s ease;
+    }
+    .contact-form .btn-submit:hover {
+        background: #006b82;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 133, 161, 0.3);
+    }
+    .contact-form .invalid-feedback {
+        font-size: 0.85rem;
+    }
+    .success-message {
+        background: #d4edda;
+        border: 1px solid #c3e6cb;
+        border-radius: 8px;
+        padding: 1.25rem 1.5rem;
+        color: #155724;
+        margin-bottom: 1.5rem;
+    }
+    .success-message i {
+        margin-right: 0.5rem;
+    }
+</style>
+{% endblock %}
+
+{% block masthead %}
+<!-- Page Header-->
+<header class="masthead" style="background-image: url('{% if not ibexa_field_is_empty(content, 'hero_image') %}{{ asset(ibexa_image_alias(ibexa_field(content, 'hero_image'), content.versionInfo, 'original').uri) }}{% else %}{{ asset('bundles/aanwikibexacleanblogtheme/images/contact-bg.jpg') }}{% endif %}')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="page-heading">
+                    <h1>{{ ibexa_field_value(content, 'title') }}</h1>
+                    {% if not ibexa_field_is_empty(content, 'subtitle') %}
+                        <span class="subheading">{{ ibexa_field_value(content, 'subtitle') }}</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+{% set settings = clean_blog_settings() %}
+<!-- Main Content-->
+<main class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+
+                {# CMS Body Content #}
+                {% if not ibexa_field_is_empty(content, 'body') %}
+                <div class="mb-4">
+                    {{ ibexa_field_value(content, 'body').xml|ibexa_richtext_to_html5|raw }}
+                </div>
+                {% endif %}
+
+                {# Contact Info from Global Settings #}
+                {% if settings %}
+                <div class="contact-info-card">
+                    <h4><i class="fas fa-address-card me-2"></i>Get In Touch</h4>
+
+                    {% if settings and not ibexa_field_is_empty(settings, 'email') %}
+                    <div class="contact-info-item">
+                        <i class="fas fa-envelope"></i>
+                        <a href="mailto:{{ ibexa_field_value(settings, 'email') }}">{{ ibexa_field_value(settings, 'email') }}</a>
+                    </div>
+                    {% endif %}
+
+                    {% if settings and not ibexa_field_is_empty(settings, 'phone_number') %}
+                    <div class="contact-info-item">
+                        <i class="fas fa-phone"></i>
+                        <a href="tel:{{ ibexa_field_value(settings, 'phone_number') }}">{{ ibexa_field_value(settings, 'phone_number') }}</a>
+                    </div>
+                    {% endif %}
+
+                    {% if settings and not ibexa_field_is_empty(settings, 'address') %}
+                    <div class="contact-info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>{{ ibexa_field_value(settings, 'address')|nl2br }}</span>
+                    </div>
+                    {% endif %}
+
+                    {# Social links #}
+                    {% set has_social = (settings and not ibexa_field_is_empty(settings, 'fb_link')) or
+                                       (settings and not ibexa_field_is_empty(settings, 'tw_link')) or
+                                       (settings and not ibexa_field_is_empty(settings, 'ig_link')) or
+                                       (settings and not ibexa_field_is_empty(settings, 'gh_link')) or
+                                       (settings and not ibexa_field_is_empty(settings, 'li_link')) %}
+                    {% if has_social %}
+                    <div class="contact-social-links">
+                        {% if not ibexa_field_is_empty(settings, 'fb_link') %}
+                        <a href="{{ ibexa_field_value(settings, 'fb_link') }}" target="_blank" rel="noopener" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        {% endif %}
+                        {% if not ibexa_field_is_empty(settings, 'tw_link') %}
+                        <a href="{{ ibexa_field_value(settings, 'tw_link') }}" target="_blank" rel="noopener" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        {% endif %}
+                        {% if not ibexa_field_is_empty(settings, 'ig_link') %}
+                        <a href="{{ ibexa_field_value(settings, 'ig_link') }}" target="_blank" rel="noopener" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        {% endif %}
+                        {% if not ibexa_field_is_empty(settings, 'gh_link') %}
+                        <a href="{{ ibexa_field_value(settings, 'gh_link') }}" target="_blank" rel="noopener" title="GitHub"><i class="fab fa-github"></i></a>
+                        {% endif %}
+                        {% if not ibexa_field_is_empty(settings, 'li_link') %}
+                        <a href="{{ ibexa_field_value(settings, 'li_link') }}" target="_blank" rel="noopener" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                {# Contact Form #}
+                <div class="contact-form-section">
+                    <h4>Send Us a Message</h4>
+
+                    {% if form_submitted is defined and form_submitted %}
+                    <div class="success-message">
+                        <i class="fas fa-check-circle"></i>
+                        <strong>Thank you!</strong> Your message has been sent successfully. We'll get back to you shortly.
+                    </div>
+                    {% endif %}
+
+                    {{ form_start(contact_form, {'attr': {'class': 'contact-form'}}) }}
+                        <div class="mb-3">
+                            {{ form_label(contact_form.name) }}
+                            {{ form_widget(contact_form.name, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(contact_form.name) }}
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form_label(contact_form.email) }}
+                                {{ form_widget(contact_form.email, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(contact_form.email) }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form_label(contact_form.phone) }}
+                                {{ form_widget(contact_form.phone, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(contact_form.phone) }}
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(contact_form.subject) }}
+                            {{ form_widget(contact_form.subject, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(contact_form.subject) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(contact_form.message) }}
+                            {{ form_widget(contact_form.message, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(contact_form.message) }}
+                        </div>
+                        <div class="d-flex justify-content-end mt-4">
+                            <button type="submit" class="btn btn-submit">
+                                <i class="fas fa-paper-plane me-1"></i> Send Message
+                            </button>
+                        </div>
+                    {{ form_end(contact_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

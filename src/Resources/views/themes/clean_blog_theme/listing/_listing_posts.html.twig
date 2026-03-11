@@ -1,0 +1,77 @@
+{% for post in pager %}
+<!-- Post preview-->
+<div class="post-preview">
+    <a href="{{ path('ibexa.url.alias', {'locationId': post.contentInfo.mainLocationId}) }}">
+        <h2 class="post-title">{{ ibexa_content_name(post) }}</h2>
+        {% if not ibexa_field_is_empty(post, 'subtitle') %}
+            <h3 class="post-subtitle">{{ ibexa_field_value(post, 'subtitle') }}</h3>
+        {% endif %}
+    </a>
+    <p class="post-meta">
+        Posted by
+        {% if not ibexa_field_is_empty(post, 'post_author') %}
+            {% set author_content = cb_load_user(ibexa_field_value(post, 'post_author').destinationContentId) %}
+        {% else %}
+            {% set author_content = cb_load_user(post.contentInfo.ownerId) %}
+        {% endif %}
+        {% if author_content %}
+            <a href="{{ cb_author_url(author_content.id) }}">{{ ibexa_content_name(author_content) }}</a>
+        {% else %}
+            <a href="#!">Admin</a>
+        {% endif %}
+        on {{ ibexa_field_value(post, 'date')|default(post.contentInfo.publishedDate|date('F j, Y')) }}
+    </p>
+
+    {% if not ibexa_field_is_empty(post, 'tags') %}
+    <div class="post-tags mb-3">
+        <i class="fas fa-tags"></i>
+        {% for tag in ibexa_field_value(post, 'tags').tags %}
+            <a href="{{ path('clean_blog_tag', {slug: tag.keyword}) }}" class="badge bg-secondary text-decoration-none link-light">{{ tag.keyword }}</a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if not ibexa_field_is_empty(post, 'categories') %}
+    <div class="post-categories mb-3">
+        <i class="fas fa-folder"></i>
+        {% for category_rel in ibexa_field_value(post, 'categories').destinationContentIds %}
+            {% set category = ibexa_load_content(category_rel) %}
+            <a href="{{ ibexa_path(category) }}" class="text-decoration-none">{{ ibexa_content_name(category) }}</a>{% if not loop.last %}, {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+<!-- Divider-->
+<hr class="my-4" />
+{% else %}
+<p>No blog posts found.</p>
+{% endfor %}
+
+<!-- Pagination -->
+{% if pager.haveToPaginate %}
+<nav aria-label="Blog pagination">
+    <ul class="pagination justify-content-center mb-4">
+        {# Previous #}
+        {% if pager.hasPreviousPage %}
+        <li class="page-item">
+            <a class="page-link" href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({page: pager.previousPage})) }}">&larr; Newer Posts</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <span class="page-link">&larr; Newer Posts</span>
+        </li>
+        {% endif %}
+
+        {# Next #}
+        {% if pager.hasNextPage %}
+        <li class="page-item">
+            <a class="page-link" href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({page: pager.nextPage})) }}">Older Posts &rarr;</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <span class="page-link">Older Posts &rarr;</span>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}

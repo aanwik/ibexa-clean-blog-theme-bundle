@@ -1,0 +1,17 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        bind:
+            $bundleDir: '%kernel.project_dir%/vendor/aanwik/ibexa-clean-blog-theme-bundle'
+
+    Aanwik\IbexaCleanBlogThemeBundle\:
+        resource: '../../*'
+        exclude: '../../{DependencyInjection,Resources,Tests,AanwikIbexaCleanBlogThemeBundle.php}'
+
+    Aanwik\IbexaCleanBlogThemeBundle\Component\Dashboard\ContactSubmissionsDashboardBlock:
+        tags:
+            - { name: ibexa.twig.component, group: 'admin-ui-dashboard-blocks' }
+
+    Aanwik\IbexaCleanBlogThemeBundle\Controller\CleanBlogFolderController:
+        public: true

@@ -1,0 +1,50 @@
+{% extends '@ibexadesign/pagelayout.html.twig' %}
+
+{% block title %}Categories - {{ ibexa_content_name(content) }}{% endblock %}
+
+{% block masthead %}
+    <header class="masthead" style="background-image: url('{{ asset('bundles/aanwikibexacleanblogtheme/images/about-bg.jpg') }}')">
+        <div class="container position-relative px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="page-heading">
+                        <h1>Categories</h1>
+                        <span class="subheading">Browse by subject</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+{% block content %}
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="row gx-4 gy-4 mb-5">
+                    {% for hit in categories %}
+                        {% set category = hit.valueObject %}
+                        <div class="col-md-6">
+                            <div class="card h-100 border-0 shadow-sm">
+                                {% if not ibexa_field_is_empty(category, 'hero_image') %}
+                                    <img src="{{ ibexa_image_alias(ibexa_field(category, 'hero_image'), category.versionInfo, 'origin').uri }}" class="card-img-top" alt="{{ ibexa_content_name(category) }}" style="height: 150px; object-fit: cover;">
+                                {% endif %}
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ ibexa_content_name(category) }}</h5>
+                                    {% if not ibexa_field_is_empty(category, 'description') %}
+                                        <p class="card-text small text-muted">{{ ibexa_field_value(category, 'description')|striptags|slice(0, 80) ~ '...' }}</p>
+                                    {% endif %}
+                                    <a href="{{ ibexa_path(category) }}" class="stretched-link"></a>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="col-12 text-center">
+                            <p>No categories found.</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

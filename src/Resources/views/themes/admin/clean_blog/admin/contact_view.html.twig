@@ -1,0 +1,101 @@
+{% extends '@ibexadesign/ui/layout.html.twig' %}
+
+{% block body_class %}clean-blog-contact-submission-view{% endblock %}
+
+{% block breadcrumbs %}
+    {% include '@ibexadesign/ui/breadcrumbs.html.twig' with { items: [
+        { value: 'Admin' },
+        { value: 'Contact Submissions', url: path('clean_blog.admin.contact_submissions') },
+        { value: submission.subject }
+    ]} %}
+{% endblock %}
+
+{% block header %}
+    {% include '@ibexadesign/ui/page_title.html.twig' with {
+        title: submission.subject,
+    } %}
+{% endblock %}
+
+{% block content %}
+    <section class="mt-4">
+        <div class="row">
+            <div class="col-lg-8">
+                {# Message Card #}
+                <div class="card ibexa-card ibexa-card--light mb-4">
+                    <div class="card-header ibexa-card__header">
+                        <h5 class="ibexa-card__title">Message</h5>
+                    </div>
+                    <div class="card-body ibexa-card__body">
+                        <p style="line-height: 1.8; white-space: pre-wrap;">{{ submission.message }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                {# Contact Details Card #}
+                <div class="card ibexa-card ibexa-card--light mb-4">
+                    <div class="card-header ibexa-card__header">
+                        <h5 class="ibexa-card__title">Contact Details</h5>
+                    </div>
+                    <div class="card-body ibexa-card__body">
+                        <table class="table table-borderless table-sm mb-0">
+                            <tr>
+                                <td class="text-muted" style="width: 90px;">Name</td>
+                                <td class="fw-semibold">{{ submission.name }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted">Email</td>
+                                <td><a href="mailto:{{ submission.email }}">{{ submission.email }}</a></td>
+                            </tr>
+                            {% if submission.phone %}
+                            <tr>
+                                <td class="text-muted">Phone</td>
+                                <td><a href="tel:{{ submission.phone }}">{{ submission.phone }}</a></td>
+                            </tr>
+                            {% endif %}
+                            <tr>
+                                <td class="text-muted">Subject</td>
+                                <td>{{ submission.subject }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted">Date</td>
+                                <td>{{ submission.createdAt|date('M j, Y g:i A') }}</td>
+                            </tr>
+                            {% if submission.ipAddress %}
+                            <tr>
+                                <td class="text-muted">IP</td>
+                                <td><code>{{ submission.ipAddress }}</code></td>
+                            </tr>
+                            {% endif %}
+                            <tr>
+                                <td class="text-muted">Status</td>
+                                <td>
+                                    {% if submission.read %}
+                                        <span class="badge bg-success">Read</span>
+                                    {% else %}
+                                        <span class="badge bg-warning text-dark">Unread</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                {# Actions Card #}
+                <div class="card ibexa-card ibexa-card--light mb-4">
+                    <div class="card-body ibexa-card__body d-grid gap-2">
+                        <a href="mailto:{{ submission.email }}?subject=Re: {{ submission.subject|url_encode }}" class="btn btn-primary">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="me-1"><path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.5.5 0 0 1-.928.021l-2.08-4.157-4.157-2.08a.5.5 0 0 1 .021-.928L17.5.293a.5.5 0 0 1 .354-.147z"/></svg>
+                            Reply via Email
+                        </a>
+                        <a href="{{ path('clean_blog.admin.contact_submissions') }}" class="btn btn-outline-secondary">
+                            ← Back to List
+                        </a>
+                        <a href="{{ path('clean_blog.admin.contact_submission_delete', {id: submission.id}) }}" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to delete this submission?')">
+                            Delete Submission
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
