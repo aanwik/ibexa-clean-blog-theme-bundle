@@ -67,6 +67,8 @@ This project stands on the shoulders of giants. We extend our sincere gratitude 
 
 ## License
 
-This bundle is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT). 
+This bundle is open-sourced software licensed under the [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/). 
 
-*The original Clean Blog HTML template by Start Bootstrap is also licensed under MIT.*
+**Note on Attribution:** You are free to share and adapt this material, provided you give appropriate credit to Aanwik.
+
+*The original Clean Blog HTML template by Start Bootstrap is licensed under the MIT License.*
